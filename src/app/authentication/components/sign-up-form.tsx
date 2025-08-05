@@ -1,20 +1,22 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { authClient } from "@/lib/auth-client";
 
 
 const formSchema = z.object({
   email: z.email("E-mail inválido").min(1, "E-mail é obrigatório"),
-  password: z.string().min(8, "Senha deve ter pelo menos 6 caracteres"),
-  passwordConfirm: z.string().min(8, "Senha deve ter pelo menos 6 caracteres"),
+  password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+  passwordConfirm: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   name: z.string().trim().min(1, "Nome é obrigatório"),
 }).refine((data) => {
     return data.password === data.passwordConfirm;
@@ -28,6 +30,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const SignUpForm = () => {
+    const router = useRouter();
+    
     const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,10 +42,28 @@ const SignUpForm = () => {
     },
   });
 
-  function onSubmit(values: FormValues) {
+  async function onSubmit(values: FormValues) {
     
-    console.log(values)
+
+        await authClient.signUp.email({
+            name: values.name, // required
+            email: values.email, // required
+            password: values.password, // required
+            fetchOptions: { 
+                onSuccess: () => {
+                    router.push("/");
+                }, 
+                onError: (error) => {
+                    if(error.error.code === 'USER_ALREADY_EXISTS') {
+                        toast.error("E-mail já está em uso");
+                        form.setError('email', { message: "E-mail já cadastrado", });
+                    }
+                    toast.error(error.error.message);    
+                }
+            } 
+        });
   }
+
 
     return (
         <>
