@@ -12,10 +12,14 @@ interface ProductItemProps {
 
 const ProductItem = ({ product }: ProductItemProps) => {
   const firstVariant = product.variants[0];
+
+ const match = firstVariant.imageUrl.match(/https?:\/\/[^"]+/);
+  const imageUrl = match ? match[0] : "";
+  
   return (
     <Link href="/" className="flex flex-col gap-4">
       <Image
-        src={firstVariant.imageUrl}
+        src={imageUrl}
         alt={firstVariant.name}
         width={200}
         height={200}

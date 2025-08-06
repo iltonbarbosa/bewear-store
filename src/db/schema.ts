@@ -38,7 +38,7 @@ export const accountTable = pgTable("account", {
  updatedAt: timestamp('updated_at').notNull()
         });
 
-export const verification = pgTable("verification", {
+export const verificationTable = pgTable("verification", {
           id: text('id').primaryKey(),
           identifier: text('identifier').notNull(),
  value: text('value').notNull(),
