@@ -26,7 +26,7 @@ const ProductItem = ({ product, textContainerClassName }: ProductItemProps) => {
         sizes="100vw"
         width={0}
         height={0}
-        className="rounded-3xl"
+        className="rounded-3xl h-auto w-full"
       />
       <div className={cn("flex max-w-[200px] flex-col gap-1", textContainerClassName)}>
         <p className="truncate text-sm font-medium">{product.name}</p>
