@@ -15,8 +15,7 @@ interface ProductItemProps {
 const ProductItem = ({ product, textContainerClassName }: ProductItemProps) => {
   const firstVariant = product.variants[0];
 
- const match = firstVariant.imageUrl.match(/https?:\/\/[^"]+/);
-  const imageUrl = match ? match[0] : "";
+  const imageUrl = getImageUrlFromVariant();
   
   return (
     <Link href={`/product-variant/${firstVariant.slug}`} className="flex flex-col gap-4">
@@ -39,6 +38,12 @@ const ProductItem = ({ product, textContainerClassName }: ProductItemProps) => {
       </div>
     </Link>
   );
+
+  function getImageUrlFromVariant() {
+    const match = firstVariant.imageUrl.match(/https?:\/\/[^"]+/);
+    const imageUrl = match ? match[0] : "";
+    return imageUrl;
+  }
 };
 
 export default ProductItem;

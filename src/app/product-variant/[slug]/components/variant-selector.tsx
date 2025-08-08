@@ -8,6 +8,12 @@ interface VariantSelectorProps {
   variants: (typeof productVariantTable.$inferSelect)[];
 }
 
+function getImageUrlFromVariant(imageUrlBd: string) {
+    const match =imageUrlBd.match(/https?:\/\/[^"]+/);
+    const imageUrl = match ? match[0] : "";
+    return imageUrl;
+  }
+
 const VariantSelector = ({
   selectedVariantSlug,
   variants,
@@ -27,7 +33,7 @@ const VariantSelector = ({
           <Image
             width={68}
             height={68}
-            src={variant.imageUrl}
+            src={getImageUrlFromVariant(variant.imageUrl)}
             alt={variant.name}
             className="rounded-xl"
           />

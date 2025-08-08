@@ -31,6 +31,10 @@ const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
   if (!productVariant) {
     return notFound();
   }
+
+  const match = productVariant.imageUrl.match(/https?:\/\/[^"]+/);
+  const imageUrl = match ? match[0] : "";
+  
   const likelyProducts = await db.query.productTable.findMany({
     where: eq(productTable.categoryId, productVariant.product.categoryId),
     with: {
@@ -42,7 +46,7 @@ const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
       <Header />
       <div className="flex flex-col space-y-6">
         <Image
-          src={productVariant.imageUrl}
+          src={imageUrl}
           alt={productVariant.name}
           sizes="100vw"
           height={0}
