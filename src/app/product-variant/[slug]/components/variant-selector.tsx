@@ -2,17 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { productVariantTable } from "@/db/schema";
+import { adjustImageUrl } from "@/helpers/adjustURL";
 
 interface VariantSelectorProps {
   selectedVariantSlug: string;
   variants: (typeof productVariantTable.$inferSelect)[];
 }
-
-function getImageUrlFromVariant(imageUrlBd: string) {
-    const match =imageUrlBd.match(/https?:\/\/[^"]+/);
-    const imageUrl = match ? match[0] : "";
-    return imageUrl;
-  }
 
 const VariantSelector = ({
   selectedVariantSlug,
@@ -33,7 +28,7 @@ const VariantSelector = ({
           <Image
             width={68}
             height={68}
-            src={getImageUrlFromVariant(variant.imageUrl)}
+            src={adjustImageUrl(variant.imageUrl)}
             alt={variant.name}
             className="rounded-xl"
           />

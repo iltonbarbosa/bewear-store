@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { productTable, productVariantTable } from "@/db/schema";
+import { adjustImageUrl } from "@/helpers/adjustURL";
 import { formatCentsToBRL } from "@/helpers/money";
 import { cn } from "@/lib/utils";
 
@@ -15,12 +16,11 @@ interface ProductItemProps {
 const ProductItem = ({ product, textContainerClassName }: ProductItemProps) => {
   const firstVariant = product.variants[0];
 
-  const imageUrl = getImageUrlFromVariant();
   
   return (
     <Link href={`/product-variant/${firstVariant.slug}`} className="flex flex-col gap-4">
       <Image
-        src={imageUrl}
+        src={adjustImageUrl(firstVariant.imageUrl)}
         alt={firstVariant.name}
         sizes="100vw"
         width={0}
@@ -39,11 +39,7 @@ const ProductItem = ({ product, textContainerClassName }: ProductItemProps) => {
     </Link>
   );
 
-  function getImageUrlFromVariant() {
-    const match = firstVariant.imageUrl.match(/https?:\/\/[^"]+/);
-    const imageUrl = match ? match[0] : "";
-    return imageUrl;
-  }
+  
 };
 
 export default ProductItem;
