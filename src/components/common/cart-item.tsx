@@ -2,6 +2,7 @@ import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 
+import { adjustImageUrl } from "@/helpers/adjustURL";
 import { formatCentsToBRL } from "@/helpers/money";
 import { useDecreaseCartProduct } from "@/hooks/mutations/use-decrease-cart-product";
 import { useIncreaseCartProduct } from "@/hooks/mutations/use-increase-cart-product";
@@ -60,7 +61,7 @@ const CartItem = ({
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <Image
-          src={productVariantImageUrl}
+          src={adjustImageUrl(productVariantImageUrl)}
           alt={productVariantName}
           width={78}
           height={78}
